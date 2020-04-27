@@ -28,6 +28,8 @@ public class JpaDocentRepository implements DocentRepository {
         //        throw new UnsupportedOperationException();
     }
 
-
-
+    @Override
+    public void create(Docent docent) {
+        entityManager.persist(docent);
+    }
 }

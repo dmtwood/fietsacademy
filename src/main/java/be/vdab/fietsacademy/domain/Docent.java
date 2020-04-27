@@ -18,6 +18,14 @@ public class Docent {
     protected Docent() {
     }
 
+    public Docent(String voornaam, String familienaam, BigDecimal wedde, String emailAdres, Geslacht geslacht) {
+        this.voornaam = voornaam;
+        this.familienaam = familienaam;
+        this.wedde = wedde;
+        this.emailAdres = emailAdres;
+        this.geslacht = geslacht;
+    }
+
     public long getId() {
         return id;
     }
