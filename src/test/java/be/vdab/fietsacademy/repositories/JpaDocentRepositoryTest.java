@@ -1,5 +1,6 @@
 package be.vdab.fietsacademy.repositories;
 
+import be.vdab.fietsacademy.domain.Geslacht;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -21,9 +22,17 @@ private final JpaDocentRepository repository;
     private long idVanTestMan() {
         return super.jdbcTemplate
                 .queryForObject(
-                "select id from docenten where voornaam = 'testL'",
+                "select id from docenten where voornaam = 'testM'",
                 Long.class
         );
+    }
+
+    private long idVanTestVrouw(){
+        return super.jdbcTemplate
+                .queryForObject(
+                        "'select id from docenten where voornaam = testV'",
+                        Long.class
+                );
     }
 
     @Test
@@ -41,6 +50,25 @@ private final JpaDocentRepository repository;
         assertThat(
                 repository.findById(-1)
         ).isNotPresent();
+    }
+
+    @Test
+    void man(){
+        assertThat(
+                repository.findById( idVanTestMan() )
+                .get() .getGeslacht()
+        ).isEqualTo(
+                Geslacht.MAN
+        );
+    }
+
+    @Test
+    void Vrouw(){
+        assertThat(
+                repository.findById( idVanTestVrouw() )
+        ).isEqualTo(
+                Geslacht.VROUW
+        );
     }
 
 

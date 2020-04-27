@@ -1,2 +1,4 @@
-insert into docenten(voornaam, familienaam, wedde, emailAdres)
-VALUES ('testM', 'testM', 1000, 'testM@test.be')
+insert into docenten(voornaam, familienaam, wedde, emailAdres, geslacht)
+VALUES ('testM', 'testM', 1000, 'testM@test.be','MAN');
+insert into docenten(voornaam, familienaam, wedde, emailAdres, geslacht) VALUES
+('testV', 'testV', 1000, 'testV@test.be','VROUW');
