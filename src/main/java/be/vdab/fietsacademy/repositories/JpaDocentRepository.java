@@ -30,6 +30,9 @@ public class JpaDocentRepository implements DocentRepository {
 
     @Override
     public void create(Docent docent) {
-        entityManager.persist(docent);
+        entityManager
+                .persist(
+                        docent
+                );
     }
 }
