@@ -76,6 +76,7 @@ private final JpaDocentRepository repository;
     void Vrouw(){
         assertThat(
                 repository.findById( idVanTestVrouw() )
+                .get() .getGeslacht()
         ).isEqualTo(
                 Geslacht.VROUW
         );
