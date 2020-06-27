@@ -48,7 +48,7 @@ private final JpaDocentRepository repository;
     @Test
     void findById() {
         assertThat(
-                repository.findById(idVanTestMan())
+                repository.findById( idVanTestMan() )
                 .get() .getVoornaam()
         ).isEqualTo(
                 "testM"
