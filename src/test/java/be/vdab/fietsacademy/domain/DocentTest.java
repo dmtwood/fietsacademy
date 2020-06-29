@@ -2,9 +2,14 @@ package be.vdab.fietsacademy.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
 import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.*;
 
+
+@DataJpaTest
 class DocentTest {
     private static final BigDecimal WEDDE = BigDecimal.valueOf(2000);
     private Docent docent1;
@@ -12,6 +17,7 @@ class DocentTest {
     void beforeEach() {
         docent1 = new Docent("test", "test", WEDDE, "test@test.be", Geslacht.MAN);
     }
+
     @Test
     void opslag() {
         docent1.opslag(BigDecimal.TEN);

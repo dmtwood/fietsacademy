@@ -1,7 +1,9 @@
 package be.vdab.fietsacademy.repositories;
 
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
 import javax.sql.DataSource;
 import java.sql.SQLException;
 

@@ -1,5 +1,7 @@
 package be.vdab.fietsacademy.services;
 
+
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,7 +11,6 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
