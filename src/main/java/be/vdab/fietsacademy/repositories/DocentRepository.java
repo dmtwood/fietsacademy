@@ -1,7 +1,12 @@
 package be.vdab.fietsacademy.repositories;
 
 import be.vdab.fietsacademy.domain.Docent;
+import be.vdab.fietsacademy.queryresults.AantalDocentenPerWedde;
+import be.vdab.fietsacademy.queryresults.IdEnEmailAdres;
 
+import javax.print.Doc;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 public interface DocentRepository {
@@ -11,4 +16,17 @@ public interface DocentRepository {
     void create(Docent docent);
 
     void delete(long id);
+
+    List<Docent> findAll();
+
+    List<Docent> findByWeddeBetween(BigDecimal van, BigDecimal tot);
+
+    List<String> findEmailAdressen();
+
+    List<IdEnEmailAdres> findIdsEnsEmailAdresssen();
+
+    BigDecimal findGrootsteWedde();
+
+    List<AantalDocentenPerWedde> findAantalDocentenPerWedde();
+
 }

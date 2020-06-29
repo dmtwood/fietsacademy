@@ -7,6 +7,10 @@ import java.math.RoundingMode;
 
 @Entity
 @Table(name = "docenten")
+// best practice -> all named queries in src/main/resources/META-INF/orm.xml
+//@NamedQuery( name = "Docent.FindByWeddeBetween",
+//        query = "select d from Docent d where d.wedde between :van and :tot" +
+//                " order by d.wedde, d.id")
 public class Docent {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id private long id;
     private String voornaam;
