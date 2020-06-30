@@ -105,4 +105,12 @@ public class JpaDocentRepository implements DocentRepository {
                 , AantalDocentenPerWedde.class)
                 .getResultList();
     }
+
+    @Override
+    public int algemeneOpslag(BigDecimal percentage) {
+        var factor = BigDecimal.ONE.add(percentage.divide(BigDecimal.valueOf(100)));
+        return entityManager.createNamedQuery("Docent.algemeneOpslag")
+                .setParameter("factor", factor)
+                .executeUpdate();
+    }
 }
