@@ -16,7 +16,10 @@ public class JpaCursusRepository implements CursusRepository {
     }
 
     @Override
-    public Optional<Cursus> findById(long id) {
+    public Optional<Cursus> findById(
+//            long id
+            String id
+    ) {
         return Optional.ofNullable(
                 manager.find( Cursus.class, id )
         );
