@@ -44,5 +44,57 @@ class DocentTest {
         );
     }
 
+    @Test
+    void eenNieuweDocentHeeftGeenBijnamen() {
+        assertThat( docent1.getBijnamen() ).isEmpty();
+    }
 
+    @Test
+    void bijnaamToevoegen() {
+        // addBijnaam has a boolean datatype
+        assertThat( docent1.addBijnaam("test") ).isTrue();
+        assertThat( docent1.getBijnamen() ).containsOnly("test");
+    }
+
+    @Test
+    void tweeDezelfdeBijnamen() {
+        docent1.addBijnaam("test");
+        assertThat( docent1.addBijnaam("test") ).isFalse();
+        assertThat( docent1.getBijnamen() ).containsOnly("test");
+    }
+
+    @Test
+    void nullAlsBijnaam() {
+        assertThatNullPointerException().isThrownBy(
+                () -> docent1.addBijnaam( null )
+        );
+    }
+
+    @Test
+    void legeBijnaam() {
+        assertThatIllegalArgumentException().isThrownBy(
+                () -> docent1.addBijnaam( "" )
+        );
+    }
+
+    @Test
+    void enkelSpatiesAlsBijnaam() {
+        assertThatIllegalArgumentException().isThrownBy(
+                () -> docent1.addBijnaam( "   " )
+        );
+    }
+
+    @Test
+    void bijnaamVerwijderen() {
+        docent1.addBijnaam( "test" );
+        assertThat( docent1.removeBijnaam( "test" ) ).isTrue();
+        assertThat( docent1.getBijnamen() ).isEmpty();
+    }
+
+    @Test
+    void onbestaandeBijnaamVerwijderen() {
+        docent1.addBijnaam( "test" );
+        assertThat( docent1.removeBijnaam( "test123" ) ).isFalse();
+        assertThat( docent1.getBijnamen() ).containsOnly( "test" );
+    }
 }
