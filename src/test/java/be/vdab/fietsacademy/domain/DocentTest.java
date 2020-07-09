@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.*;
 
 
-@DataJpaTest
+//@DataJpaTest
 class DocentTest {
     private static final BigDecimal WEDDE = BigDecimal.valueOf(2000);
     private Docent docent1;

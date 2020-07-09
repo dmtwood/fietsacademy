@@ -1,6 +1,10 @@
 package be.vdab.fietsacademy.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table( name = "campussen" )
@@ -8,13 +12,22 @@ public class Campus {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
+
     private String naam;
+
     @Embedded
     private Adres adres;
+
+    @ElementCollection // indicates var with collection of value objects
+    @CollectionTable( name = "campussentelefoonnrs", // name of table holding value objects
+    joinColumns = @JoinColumn( name = "campusid")) // FK ~ PK campussen > class Campus
+    @OrderBy("fax")
+    private Set<TelefoonNr> telefoonNrs;
 
     public Campus(String naam, Adres adres) {
         this.naam = naam;
         this.adres = adres;
+        this.telefoonNrs = new LinkedHashSet<>();
     }
     protected Campus() {
     }
@@ -29,5 +42,19 @@ public class Campus {
 
     public Adres getAdres() {
         return adres;
+    }
+
+    public Set<TelefoonNr> getTelefoonNrs() {
+        return Collections.unmodifiableSet( telefoonNrs );
+    }
+
+    public boolean addTelefoonNr(TelefoonNr telefoonNr) {
+        if (! telefoonNrs.contains(telefoonNr) ){
+            return telefoonNrs.add(telefoonNr);
+        } else return false;
+    }
+
+    public boolean removeTelefoonNr(TelefoonNr telefoonNr) {
+        return telefoonNrs.remove(telefoonNr);
     }
 }

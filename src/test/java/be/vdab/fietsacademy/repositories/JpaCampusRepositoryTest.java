@@ -2,13 +2,15 @@ package be.vdab.fietsacademy.repositories;
 
 import be.vdab.fietsacademy.domain.Adres;
 import be.vdab.fietsacademy.domain.Campus;
+import be.vdab.fietsacademy.domain.TelefoonNr;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 @DataJpaTest
 @Import(JpaCampusRepository.class)
@@ -54,5 +56,19 @@ public class JpaCampusRepositoryTest extends AbstractTransactionalJUnit4SpringCo
                 )
         ).isOne();
     }
+
+    @Test
+    void telefoonNrsLezen() {
+        assertThat(
+                jpaCampusRepository.findById( idVanTestCampus() ).get().getTelefoonNrs()
+        ).containsOnly(
+                new TelefoonNr("1", false, "test")
+        );
+    }
+
+
+
+
+
 
 }
