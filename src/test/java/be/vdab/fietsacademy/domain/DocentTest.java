@@ -13,11 +13,13 @@ import static org.assertj.core.api.Assertions.*;
 class DocentTest {
     private static final BigDecimal WEDDE = BigDecimal.valueOf(2000);
     private Docent docent1;
+    private Campus campus1;
+
     @BeforeEach
     void beforeEach() {
-        docent1 = new Docent("test", "test", WEDDE, "test@test.be", Geslacht.MAN);
+        campus1 = new Campus( "test", new Adres("test","test","test","test") );
+        docent1 = new Docent("test", "test", WEDDE, "test@test.be", Geslacht.MAN, campus1);
     }
-
     @Test
     void opslag() {
         docent1.opslag(BigDecimal.TEN);
@@ -37,6 +39,7 @@ class DocentTest {
                 () -> docent1.opslag(BigDecimal.ZERO)
         );
     }
+
     @Test
     void negatieveOpslagMislukt() {
         assertThatIllegalArgumentException().isThrownBy(
@@ -97,4 +100,5 @@ class DocentTest {
         assertThat( docent1.removeBijnaam( "test123" ) ).isFalse();
         assertThat( docent1.getBijnamen() ).containsOnly( "test" );
     }
+
 }
