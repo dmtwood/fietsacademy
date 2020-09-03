@@ -2,15 +2,18 @@ package be.vdab.fietsacademy.domain;
 
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 //@Table( name = "cursussen" )
 //@Inheritance( strategy = InheritanceType.SINGLE_TABLE )
 //@Inheritance( strategy = InheritanceType.JOINED)
+
 @Inheritance( strategy = InheritanceType.TABLE_PER_CLASS)
 // discriminator column does not need a member var
 //@DiscriminatorColumn( name = "soort" )
+
 public abstract class Cursus {
     @Id
 //    @GeneratedValue ( strategy = GenerationType.IDENTITY )
@@ -35,5 +38,18 @@ public abstract class Cursus {
 
     public String getNaam() {
         return naam;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cursus)) return false;
+        Cursus cursus = (Cursus) o;
+        return Objects.equals(naam, cursus.naam);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(naam);
     }
 }

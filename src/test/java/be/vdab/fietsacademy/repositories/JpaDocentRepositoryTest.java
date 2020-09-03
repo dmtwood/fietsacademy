@@ -1,5 +1,7 @@
 package be.vdab.fietsacademy.repositories;
 
+import be.vdab.fietsacademy.domain.Adres;
+import be.vdab.fietsacademy.domain.Campus;
 import be.vdab.fietsacademy.domain.Docent;
 import be.vdab.fietsacademy.domain.Geslacht;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,7 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Sql("/insertCampus.sql")
 @Sql("/insertDocent.sql")
 @Import(JpaDocentRepository.class)
 public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
@@ -23,10 +26,24 @@ private final JpaDocentRepository repository;
     private Docent docent;
     private final EntityManager manager;
     private static final String DOCENTEN = "docenten";
+    private Campus campus;
 
     JpaDocentRepositoryTest(JpaDocentRepository repository, EntityManager manager) {
         this.repository = repository;
         this.manager = manager;
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        campus =new Campus("test", new Adres("newStraat", "newNr", "newPostcode", "newGemeente" ) );
+        docent = new Docent("test",
+                "test",
+                BigDecimal.TEN,
+                "test@test.be",
+                Geslacht.MAN
+                // commented for one to many, p. 62
+                 ,   campus
+        );
     }
 
     private long idVanTestMan() {
@@ -63,7 +80,7 @@ private final JpaDocentRepository repository;
     }
 
     @Test
-    void man(){
+    void geslachtMan(){
         assertThat(
                 repository.findById( idVanTestMan() )
                 .get() .getGeslacht()
@@ -73,7 +90,7 @@ private final JpaDocentRepository repository;
     }
 
     @Test
-    void Vrouw(){
+    void geslachtVrouw(){
         assertThat(
                 repository.findById( idVanTestVrouw() )
                 .get() .getGeslacht()
@@ -82,27 +99,34 @@ private final JpaDocentRepository repository;
         );
     }
 
-    @BeforeEach
-    void beforeEach() {
-        docent = new Docent("test",
-                "test",
-                BigDecimal.TEN,
-                "test@test.be",
-                Geslacht.MAN);
-    }
-
     @Test
     void create(){
+        manager.persist(campus);
         repository.create(docent);
+        manager.flush();     //  for one to many, p. 62
+
         assertThat(
                 docent.getId()
         ).isPositive();
+
         assertThat(
                 super.countRowsInTableWhere(
                         DOCENTEN,
                         "id=" + docent.getId()
                 )
         ).isOne();
+
+        assertThat(
+                super.jdbcTemplate.queryForObject(
+                        "select campusid from docenten where id=?",
+                        Long.class,
+                        docent.getId()
+                )
+        ).isEqualTo(
+                campus.getId()
+        );
+
+
     }
 
     @Test
@@ -150,7 +174,7 @@ private final JpaDocentRepository repository;
     }
 
     @Test
-    void findEmailAdressen(){
+    void findEmailAdresses(){
         assertThat(
                 repository.findEmailAdressen()
         ).hasSize(
@@ -164,7 +188,7 @@ private final JpaDocentRepository repository;
     }
 
     @Test
-    void findIdsEnEmailAdressen(){
+    void findIdsAndEmailAdresses(){
         assertThat(
                 repository.findIdsEnsEmailAdresssen()
         ).hasSize(
@@ -228,6 +252,7 @@ private final JpaDocentRepository repository;
 
     @Test
     void bijnaamToevoegen() {
+        manager.persist(campus);
         repository.create( docent );
         docent.addBijnaam("test");
         manager.flush();
@@ -239,4 +264,12 @@ private final JpaDocentRepository repository;
                 )
         ).isEqualTo("test");
     }
+
+    // commented for one to many, p. 62
+    @Test
+    void campusLazyLoaded() {
+        var docent = repository.findById(idVanTestMan()).get();
+        assertThat(docent.getCampus().getNaam()).isEqualTo("testc");
+    }
+
 }

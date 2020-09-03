@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 //@DiscriminatorValue( "G" )
 @Entity
-@Inheritance( strategy = InheritanceType.JOINED)
+@Inheritance( strategy = InheritanceType.TABLE_PER_CLASS)
 @Table( name = "groepscursussen" )
 public class GroepsCursus extends Cursus {
 

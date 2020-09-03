@@ -1,7 +1,4 @@
 package be.vdab.fietsacademy.services;
-
-
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,8 +19,10 @@ import static org.assertj.core.api.Assertions.assertThat;
         resourcePattern = "JpaDocentRepository.class"
 )
 @Sql("/insertDocent.sql")
+@Sql("/insertCampus.sql")
 public class DefaultDocentServiceIntegrationTest
 extends AbstractTransactionalJUnit4SpringContextTests {
+
     private final DefaultDocentService defaultDocentService;
     private final EntityManager entityManager;
 
@@ -37,18 +36,22 @@ extends AbstractTransactionalJUnit4SpringContextTests {
 
     private long idVanTestMan() {
         return super.jdbcTemplate.queryForObject(
-                "select id from docenten where voornaam='testM'", long.class
+                "select id from docenten where voornaam='testM'",
+                Long.class
         );
     }
 
     @Test
     void opslag() {
         var id = idVanTestMan();
+
         defaultDocentService.opslag(
                 id, BigDecimal.TEN
         );
+
         // force entitymanager to execute this change immediately so test can be performed (default: exec on commit)
         entityManager.flush();
+
         assertThat(
                 super.jdbcTemplate.queryForObject(
                         "select wedde from docenten where id=?",

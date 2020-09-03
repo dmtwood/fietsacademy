@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 //@DiscriminatorValue( "I" )
 @Entity
-@Inheritance( strategy = InheritanceType.JOINED)
+@Inheritance( strategy = InheritanceType.TABLE_PER_CLASS)
 @Table( name = "individuelecursussen" )
 public class IndividueleCursus extends Cursus {
 

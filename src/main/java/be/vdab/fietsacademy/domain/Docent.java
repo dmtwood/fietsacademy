@@ -21,8 +21,7 @@ public class Docent {
     private String familienaam;
     private BigDecimal wedde;
     private String emailAdres;
-    @Enumerated(EnumType.STRING)
-    private Geslacht geslacht;
+    @Enumerated(EnumType.STRING) private Geslacht geslacht;
 
     //     @ElementCollection >> collection of value objects
     @ElementCollection
@@ -33,21 +32,24 @@ public class Docent {
     @Column( name = "bijnaam")
     private Set<String> bijnamen;
 
-    @ManyToOne( optional = false )
-    @JoinColumn( name = "campusid" )
-    private Campus campus;
+    // commented for one to many, p. 62
+     @ManyToOne( fetch = FetchType.LAZY ) @JoinColumn( name = "campusid" ) private Campus campus;
 
     // CONSTRUCTORS
     protected Docent() {
     }
 
-    public Docent(String voornaam, String familienaam, BigDecimal wedde, String emailAdres, Geslacht geslacht, Campus campus) {
+    public Docent(String voornaam, String familienaam, BigDecimal wedde, String emailAdres, Geslacht geslacht
+               ,   Campus campus
+    ) {
         this.voornaam = voornaam;
         this.familienaam = familienaam;
         this.wedde = wedde;
         this.emailAdres = emailAdres;
         this.geslacht = geslacht;
         this.bijnamen = new LinkedHashSet<>();
+
+        // commented for one to many, p. 62
         setCampus( campus );
     }
 
@@ -76,11 +78,14 @@ public class Docent {
         return geslacht;
     }
 
+    // commented for one to many, p. 62
     public Campus getCampus() {
         return campus;
     }
 
-    public void setCampus(Campus campus) {
+    // commented for one to many, p. 62
+   public void setCampus(Campus campus) {
+        if (!campus.getDocenten().contains(this)) { campus.add(this); }
         this.campus = campus;
     }
 
@@ -111,6 +116,19 @@ public class Docent {
     public boolean removeBijnaam(String bijnaam){
         return bijnamen.remove( bijnaam );
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Docent) {
+            return emailAdres.equalsIgnoreCase(((Docent) obj).emailAdres);
+        }
+        return false;
+    }
+    @Override
+    public int hashCode() {
+        return emailAdres == null ? 0 : emailAdres.toLowerCase().hashCode();
+    }
+
 }
 
 

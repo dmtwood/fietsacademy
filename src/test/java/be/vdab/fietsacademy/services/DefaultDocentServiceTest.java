@@ -1,5 +1,7 @@
 package be.vdab.fietsacademy.services;
 
+import be.vdab.fietsacademy.domain.Adres;
+import be.vdab.fietsacademy.domain.Campus;
 import be.vdab.fietsacademy.domain.Docent;
 import be.vdab.fietsacademy.domain.Geslacht;
 import be.vdab.fietsacademy.exceptions.DocentNietGevondenException;
@@ -29,9 +31,14 @@ class DefaultDocentServiceTest {
 
     @BeforeEach
     void beforeEach(){
+        var campus = new Campus( "test", new Adres("test","test","test","test") );
+
         docent = new Docent(
                 "test", "test", BigDecimal.valueOf(100), "test@test.be", Geslacht.MAN
+                // commented for one to many, p. 62
+                 , campus
         );
+
         docentService = new DefaultDocentService( docentRepository );
     }
 
@@ -42,10 +49,13 @@ class DefaultDocentServiceTest {
         ) .thenReturn(
                 Optional.of( docent )
         );
+
         docentService .opslag( 1, BigDecimal.TEN );
+
         assertThat(
                 docent .getWedde()
         ) .isEqualByComparingTo( "110");
+
         verify( docentRepository )
                 .findById( 1 );
     }
@@ -56,6 +66,7 @@ class DefaultDocentServiceTest {
                 .isThrownBy(
                         () -> docentService .opslag( -1, BigDecimal.TEN)
                 );
+
         verify( docentRepository ) .findById( -1 );
     }
 

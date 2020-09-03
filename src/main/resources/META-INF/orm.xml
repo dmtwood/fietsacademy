@@ -17,4 +17,12 @@ http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd" version="2.1">
         </query>
     </named-query>
 
+    <named-query name="Campus.westVlaamsSorted">
+        <query>
+            select c from Campus c
+            where c.adres.postcode between '8000' and '8999'
+            order by c.adres.gemeente
+        </query>
+    </named-query>
+
 </entity-mappings>

@@ -10,13 +10,13 @@ public class Adres {
     private String straat;
     private String huisNr;
     private String postcode;
-    private String Gemeente;
+    private String gemeente;
 
     public Adres(String straat, String huisNr, String postcode, String gemeente) {
         this.straat = straat;
         this.huisNr = huisNr;
         this.postcode = postcode;
-        Gemeente = gemeente;
+        this.gemeente = gemeente;
     }
     protected Adres() {
     }
@@ -34,6 +34,6 @@ public class Adres {
     }
 
     public String getGemeente() {
-        return Gemeente;
+        return gemeente;
     }
 }
